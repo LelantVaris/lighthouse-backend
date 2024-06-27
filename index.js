@@ -34,8 +34,8 @@ app.post('/lighthouse', async (req, res) => {
 
         return res.json(runnerResult.lhr);
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'An error occurred while running Lighthouse' });
+        console.error('Error details:', error);
+        return res.status(500).json({ error: 'An error occurred while running Lighthouse', details: error.message });
     }
 });
 
