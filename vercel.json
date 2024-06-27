@@ -14,7 +14,7 @@
     ],
     "functions": {
       "index.js": {
-        "includeFiles": "node_modules/lighthouse/shared/localization/locales/**"
+        "includeFiles": "locales/**"
       }
     }
   }
