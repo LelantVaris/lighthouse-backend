@@ -22,16 +22,21 @@ app.post('/lighthouse', async (req, res) => {
         return res.status(400).json({ error: 'URL is required' });
     }
 
-    const lighthouse = await import('lighthouse');
-    const chromeLauncher = await import('chrome-launcher');
+    try {
+        const lighthouse = await import('lighthouse');
+        const chromeLauncher = await import('chrome-launcher');
 
-    const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
-    const options = { logLevel: 'info', output: 'json', onlyCategories: ['performance'], port: chrome.port };
-    const runnerResult = await lighthouse.default(url, options);
+        const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
+        const options = { logLevel: 'info', output: 'json', onlyCategories: ['performance'], port: chrome.port };
+        const runnerResult = await lighthouse.default(url, options);
 
-    await chrome.kill();
+        await chrome.kill();
 
-    return res.json(runnerResult.lhr);
+        return res.json(runnerResult.lhr);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'An error occurred while running Lighthouse' });
+    }
 });
 
 app.listen(port, () => {
