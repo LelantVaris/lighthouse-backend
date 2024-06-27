@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "postinstall": "node copy-locales.js"
+    "postinstall": "node copy-locales.js && npx puppeteer install"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
