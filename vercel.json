@@ -6,6 +6,12 @@
         "use": "@vercel/node"
       }
     ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/index.js"
+      }
+    ],
     "env": {
       "PUPPETEER_CACHE_DIR": "/tmp/puppeteer-cache"
     }
