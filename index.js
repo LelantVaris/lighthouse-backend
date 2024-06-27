@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const puppeteer = require('puppeteer');
-const lighthouse = require('lighthouse');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -25,6 +24,7 @@ app.post('/lighthouse', async (req, res) => {
     }
 
     try {
+        const lighthouse = await import('lighthouse');
         const browser = await puppeteer.launch({
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
             headless: true
@@ -37,7 +37,7 @@ app.post('/lighthouse', async (req, res) => {
             port: (new URL(browser.wsEndpoint())).port,
         };
 
-        const runnerResult = await lighthouse(url, options);
+        const runnerResult = await lighthouse.default(url, options);
 
         await browser.close();
 
