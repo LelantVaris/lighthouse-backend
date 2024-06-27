@@ -1,5 +1,4 @@
 const express = require('express');
-const chromeLauncher = require('chrome-launcher');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -14,8 +13,9 @@ app.post('/lighthouse', async (req, res) => {
         return res.status(400).json({ error: 'URL is required' });
     }
 
-    // Use dynamic import for lighthouse
+    // Use dynamic imports for both lighthouse and chrome-launcher
     const lighthouse = await import('lighthouse');
+    const chromeLauncher = await import('chrome-launcher');
 
     const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
     const options = { logLevel: 'info', output: 'json', onlyCategories: ['performance'], port: chrome.port };
