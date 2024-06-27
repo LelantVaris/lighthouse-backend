@@ -6,7 +6,11 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
-// Add a root route
+// Add a route to handle favicon requests
+app.get('/favicon.ico', (req, res) => {
+    res.status(204).end();
+});
+
 app.get('/', (req, res) => {
     res.send('Lighthouse Backend is running');
 });
@@ -18,7 +22,6 @@ app.post('/lighthouse', async (req, res) => {
         return res.status(400).json({ error: 'URL is required' });
     }
 
-    // Use dynamic imports for both lighthouse and chrome-launcher
     const lighthouse = await import('lighthouse');
     const chromeLauncher = await import('chrome-launcher');
 
