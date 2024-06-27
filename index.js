@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const puppeteer = require('puppeteer');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -25,21 +24,13 @@ app.post('/lighthouse', async (req, res) => {
 
     try {
         const lighthouse = await import('lighthouse');
-        const browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
-            headless: true
-        });
+        const chromeLauncher = await import('chrome-launcher');
 
-        const options = {
-            logLevel: 'info',
-            output: 'json',
-            onlyCategories: ['performance'],
-            port: (new URL(browser.wsEndpoint())).port,
-        };
-
+        const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
+        const options = { logLevel: 'info', output: 'json', onlyCategories: ['performance'], port: chrome.port };
         const runnerResult = await lighthouse.default(url, options);
 
-        await browser.close();
+        await chrome.kill();
 
         return res.json(runnerResult.lhr);
     } catch (error) {
