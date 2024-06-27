@@ -6,6 +6,11 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
+// Add a root route
+app.get('/', (req, res) => {
+    res.send('Lighthouse Backend is running');
+});
+
 app.post('/lighthouse', async (req, res) => {
     const { url } = req.body;
 
